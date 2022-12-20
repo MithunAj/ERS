@@ -23,7 +23,7 @@ app.use(session({
         maxAge : 1000 * 60 * 100
     },
     store: mongoStore.create({
-        mongoUrl: 'mongodb://localhost/ERS',
+        mongoUrl: 'mongodb+srv://MithunAj:TqZQxDDMNLfQgTiG@cluster0.per79te.mongodb.net/?retryWrites=true&w=majority',
         autoRemove: 'disables'
     },
     function(err){
