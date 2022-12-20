@@ -8,29 +8,40 @@ const Review = require('../models/review');
 
 router.get('/home',async function(req,res){
 
-    if(req.isAuthenticated()){
-        if(req.user.isAdmin){
-            let users = await User.find({});
-            let reviews = await Review.find({}).populate('reviewOf reviewBy');
-            return res.render('home',{
-                usersList: users,
-                reviews : reviews
-            })
+    try {
+        if(req.isAuthenticated()){
+            if(req.user.isAdmin){
+                let users = await User.find({});
+                let reviews = await Review.find({}).populate('reviewOf reviewBy');
+                return res.render('home',{
+                    usersList: users,
+                    reviews : reviews
+                })
+            }else{
+                let reviews = await Review.find({reviewBy:req.user.id}).populate('reviewOf reviewBy');
+     
+                return res.render('home',{
+                    reviews : reviews
+                });
+            }
+            
         }else{
-            let reviews = await Review.find({reviewBy:req.user.id}).populate('reviewOf reviewBy');
- 
-            return res.render('home',{
-                reviews : reviews
-            });
+            return res.redirect('users/signIn')
         }
-        
-    }else{
-        return res.redirect('users/signIn')
+    } catch (error) {
+        console.log(error);
+        return res.redirect('back');
     }
+    
 })
 
 router.get('/',function(req,res){
-    return res.redirect('/home');
+    try {
+        return res.redirect('/home');
+    } catch (error) {
+        console.log(error);
+        return res.redirect('back');
+    }
 })
 
 router.use('/users',require('./users'))
