@@ -62,21 +62,33 @@ module.exports.createUser = async function(req,res){
 }
 
 module.exports.userSignIn = function(req,res){
+    try {
+        if(req.isAuthenticated()){
+            return res.redirect('/home')
+        }
+    
+        return res.render('signIn');
 
-    if(req.isAuthenticated()){
-        return res.redirect('/home')
+    } catch (error) {
+        console.log(error);
+        return res.redirect('back');
     }
 
-    return res.render('signIn');
 }
 
 module.exports.userSignUp = function(req,res){
-
-    if(req.isAuthenticated()){
-        return res.redirect('/home');
+    
+    try {
+        if(req.isAuthenticated()){
+            return res.redirect('/home');
+        }
+    
+        return res.render('signUp'); 
+    } catch (error) {
+       console.log(error);
+       return res.redirect('back'); 
     }
-
-    return res.render('signUp');
+  
 }
 
 module.exports.createSession = async function(req,res){
