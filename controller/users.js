@@ -4,13 +4,19 @@ const User = require('../models/user')
 
 
 module.exports.destroySession = function(req,res){
-    req.logOut(function(err){
-        if(err){
-            console.log(err);
-            return res.redirect('back');
-        }
-        return res.redirect('/users/SignIn')
-    });
+    try {
+        req.logOut(function(err){
+            if(err){
+                console.log(err);
+                return res.redirect('back');
+            }
+            return res.redirect('/users/SignIn')
+        });
+    } catch (error) {
+        console.log(error);
+        return res.redirect('back');
+    }
+
     
 }
 
@@ -93,10 +99,15 @@ module.exports.userSignUp = function(req,res){
 
 module.exports.createSession = async function(req,res){
 
-    if(req.isAuthenticated()){
-        return res.redirect('/home')
+    try {
+        if(req.isAuthenticated()){
+            return res.redirect('/home')
+        }
+        return res.redirect('users/signIn')
+    } catch (error) {
+        console.log(error);
+        return res.redirect('back');
     }
-    return res.redirect('users/signIn')
 }
 
 module.exports.updateUser = async function(req,res){
