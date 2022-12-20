@@ -24,3 +24,8 @@ With following capablities
 
 
 An employee can register, only admin can make an employee an admin
+
+
+Admin account for testing
+email - admin@test.com
+pass - 123
